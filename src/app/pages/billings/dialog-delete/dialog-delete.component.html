@@ -1,0 +1,24 @@
+<h1 mat-dialog-title>Excluir</h1>
+<div mat-dialog-content>
+  <p>
+    <strong>Atenção </strong> Esta ação não poderá ser revertida futuramente,
+    deseja realmente seguir com a exclusão ?
+  </p>
+</div>
+<div mat-dialog-actions>
+  <div class="actions" style="width: 100%;">
+    <button
+      mat-stroked-button
+      color="primary"
+      cdkFocusInitial
+      (click)="onNoClick()"
+    >
+      Cancelar
+    </button>
+    <div class="save">
+      <button mat-raised-button color="warn" (click)="delete()">
+        Excluir
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+<div
+  [ngClass]="{
+    'align-items-center': !isRegisterPage,
+    'h-100': !isRegisterPage,
+    'bg-toodo-be': !isRegisterPage,
+    'bg-toodo-be-register': isRegisterPage
+  }"
+  class="d-sm-flex justify-content-center"
+>
+  <router-outlet></router-outlet>
+</div>

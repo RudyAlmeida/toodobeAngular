@@ -1,0 +1,27 @@
+<h1 mat-dialog-title>Ops, não confirmou email!!!</h1>
+<div mat-dialog-content>
+  <p>
+    Ainda não recebemos sua confirmação de email, gostaria de receber novamente
+    um email para confirmação ?
+  </p>
+</div>
+<div class="actions" style="width: 100%;">
+  <button
+    mat-stroked-button
+    color="primary"
+    cdkFocusInitial
+    (click)="onNoClick()"
+  >
+    Não
+  </button>
+  <div class="save">
+    <button
+      mat-raised-button
+      color="primary"
+      cdkFocusInitial
+      (click)="onYesClick()"
+    >
+      Sim
+    </button>
+  </div>
+</div>

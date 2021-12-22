@@ -1,0 +1,9 @@
+.button {
+  width: 100%;
+}
+
+@media(min-width:575px) {
+  .app-login {
+    min-width: 500px;
+  }
+}

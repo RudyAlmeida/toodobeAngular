@@ -1,0 +1,114 @@
+<div class="header pb-7 pt-4 pt-lg-7 pt-md-7 d-flex align-items-center">
+  <!-- Mask -->
+  <span class="mask bg-gradient-orange opacity-8"></span>
+
+  <!-- Header container -->
+  <div class="container-fluid d-flex align-items-center">
+    <div class="row w-100">
+      <div class="w-100 col-lg-7 col-md-10">
+        <h1 class="display-2 text-white">Assinaturas</h1>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col-12">
+      <div class="card bg-secondary shadow">
+        <div class="card-body">
+          <div class="row" *ngIf="profile.role === 'admin'">
+            <div class="col-12">
+              <div class="action">
+                <button
+                  (click)="register()"
+                  [disabled]="isLoadingResults"
+                  mat-raised-button
+                  color="primary"
+                >
+                  Cadastrar
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12">
+              <div class="table-container mat-elevation-z8">
+                <div class="loading-shade" *ngIf="isLoadingResults">
+                  <mat-spinner></mat-spinner>
+                </div>
+
+                <!-- [matSortDisabled]="isLoadingResults || !recordsTotal" -->
+
+                <div class="table">
+                  <table
+                    mat-table
+                    [dataSource]="dataSource"
+                    matSort
+                    [matSortDisabled]="true"
+                    class="mat-elevation-z8"
+                  >
+                    <ng-container
+                      [matColumnDef]="item"
+                      *ngFor="let item of displayedColumns"
+                    >
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{ dataTableInfo.titles[item] }}
+                      </th>
+                      <td mat-cell *matCellDef="let element">
+                        <button
+                          mat-mini-fab
+                          *ngIf="item === 'view'"
+                          (click)="sendToView(element.id)"
+                          aria-label="Visualizar item"
+                        >
+                          <mat-icon>visibility</mat-icon>
+                        </button>
+                        <button
+                          mat-mini-fab
+                          *ngIf="item === 'edit' && profile.role === 'admin'"
+                          (click)="sendToEdit(element.id)"
+                          aria-label="Editar item"
+                        >
+                          <mat-icon>edit</mat-icon>
+                        </button>
+                        <button
+                          mat-mini-fab
+                          *ngIf="item === 'delete' && profile.role === 'admin'"
+                          (click)="setSelectedId(element.id)"
+                          aria-label="Deletar item"
+                        >
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                        <span *ngIf="item !== 'edit' && item !== 'delete'">
+                          {{ element[item] }}</span
+                        >
+                      </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr
+                      mat-row
+                      *matRowDef="let row; columns: displayedColumns"
+                    ></tr>
+                  </table>
+                </div>
+                <mat-card *ngIf="!isLoadingResults && !recordsTotal">
+                  Não encontramos resultados{{
+                    profile.role === "admin" ? " , cadastre no botão acima." : "."
+                  }}
+                </mat-card>
+                <mat-paginator
+                  [length]="recordsTotal"
+                  [pageSize]="10"
+                  [pageSizeOptions]="[10, 20, 40, 100]"
+                  [disabled]="isLoadingResults || !recordsTotal"
+                  showFirstLastButtons
+                ></mat-paginator>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

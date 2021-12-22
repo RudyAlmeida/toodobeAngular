@@ -1,0 +1,35 @@
+.table-container {
+  position: relative;
+  min-height: 200px;
+}
+
+.table {
+  position: relative;
+  overflow: auto;
+  td {
+    vertical-align: inherit;
+  }
+}
+
+table {
+  width: 100%;
+}
+
+.action {
+  display: flex;
+  flex-direction: row-reverse;
+  margin-top: 20px;
+}
+
+.loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 56px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

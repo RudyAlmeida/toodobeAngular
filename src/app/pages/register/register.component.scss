@@ -1,0 +1,80 @@
+.forgot-password {
+  min-width: 90%;
+}
+
+.actions {
+  display: flex;
+
+  button {
+    min-width: 100px;
+  }
+
+  .cancel {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+.terms-link {
+  display: flex;
+  align-items: center;
+  a {
+    margin-left: 5px;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.table-container {
+  position: relative;
+  min-height: 200px;
+}
+
+.table {
+  position: relative;
+  overflow: auto;
+  max-width: 100%;
+  td {
+    vertical-align: inherit;
+    padding: 0 10px;
+  }
+}
+
+.loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 56px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+form {
+  min-height: 53vh;
+}
+
+mat-radio-button {
+  margin-right: 10px;
+}
+
+@media (min-width: 575px) {
+  .forgot-password {
+    min-width: 500px;
+  }
+}
+
+
+@media screen and (max-width: 600px){
+  .forgot-password {
+    padding: 0 !important;
+  }
+
+  .card-body {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}

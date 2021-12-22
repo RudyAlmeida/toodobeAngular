@@ -1,0 +1,115 @@
+<div class="header pb-7 pt-4 pt-lg-7 pt-md-7 d-flex align-items-center">
+  <!-- Mask -->
+  <span class="mask bg-gradient-orange opacity-8"></span>
+
+  <!-- Header container -->
+  <div class="container-fluid d-flex align-items-center">
+    <div class="row w-100">
+      <div class="w-100 col-lg-7 col-md-10">
+        <h1 class="display-2 text-white">Detalhes assinatura</h1>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col-12">
+      <div class="card bg-secondary shadow">
+        <div class="card-header bg-white border-0">
+          <div class="row align-items-center">
+            <div class="col-8">
+              <h3 class="mb-0">Assinatura</h3>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div *ngIf="loading" class="loadingForm">
+            <mat-spinner></mat-spinner>
+          </div>
+          <form role="form" *ngIf="!loading">
+            <h6 class="heading-small text-muted mb-4">
+              Informações do assinatura
+            </h6>
+            <!-- Informações do usuário -->
+            <div class="pl-lg-4">
+              <div class="row">
+                <div class="col-12 detail">
+                  <strong>Usuário: </strong>
+                  <span>{{ dataForm.user_name }}</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12 detail">
+                  <strong>Descrição: </strong>
+                  <span>{{ dataForm.description }}</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12 detail">
+                  <strong>Valor: </strong>
+                  <span>{{ dataForm.value }}</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12 detail">
+                  <strong>Data vencimento: </strong>
+                  <span>{{ dataForm.next_due_date }}</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12 detail">
+                  <strong>Status: </strong>
+                  <span>{{ dataForm.status }}</span>
+                </div>
+              </div>
+            </div>
+
+            <br>
+
+            <h6 class="heading-small text-muted mb-4" *ngIf="dataForm.billings">
+              Cobranças assinatura
+            </h6>
+
+            <div class="table" *ngIf="dataForm.billings">
+              <table mat-table [dataSource]="dataForm.billings" matSort [matSortDisabled]="true"
+                class="mat-elevation-z8">
+                <ng-container [matColumnDef]="item" *ngFor="let item of displayedColumns">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    {{ dataTableInfo.titles[item] }}
+                  </th>
+                  <td mat-cell *matCellDef="let element">
+                    <button
+                      mat-mini-fab
+                      *ngIf="item === 'view'"
+                      (click)="sendToView(element.id)"
+                      aria-label="Visualizar item"
+                    >
+                      <mat-icon>visibility</mat-icon>
+                    </button>
+                    <a *ngIf="element.status === 'PENDING' && item === 'invoice_url'" [href]="element[item]"
+                      target="_blank">
+                      Abrir pagamento
+                    </a>
+                    <span *ngIf="item !== 'invoice_url'">
+                      {{ element[item] }}</span>
+                  </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+              </table>
+            </div>
+
+            <p *ngIf="loading">
+              <mat-progress-bar mode="query"></mat-progress-bar>
+            </p>
+            <div class="actions">
+              <button type="button" mat-stroked-button color="primary" (click)="cancel()">
+                Voltar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,44 @@
+.header {
+  height: 250px;
+}
+
+.action {
+  max-height: 80px;
+  display: flex;
+  align-items: center;
+
+  mat-spinner {
+    margin-left: 50px;
+  }
+}
+
+.example-chip-list {
+  width: 100%;
+}
+
+.checkbox-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.radio-group {
+  mat-radio-button {
+    margin: 10px;
+  }
+}
+
+.loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 15px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+}

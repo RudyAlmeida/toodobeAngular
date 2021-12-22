@@ -1,0 +1,66 @@
+<div class="header bg-gradient-orange pb-8 pt-5 pt-md-8">
+  <div class="container-fluid d-flex align-items-center">
+    <div class="row w-100">
+      <div class="w-100 col-lg-7 col-md-10">
+        <h1 class="display-2 text-white">Eventos</h1>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col">
+      <div class="card shadow">
+        <div class="card-body">
+          <div class="action">
+            <button
+              (click)="register()"
+              [disabled]="loading"
+              mat-raised-button
+              color="primary"
+            >
+              Cadastrar
+            </button>
+          </div>
+
+          <mat-card class="card-events" *ngFor="let item of events">
+            <mat-card-header>
+              <mat-card-title>
+                <div class="row w-100 m-0">
+                  <div class="col-sm-7 p-0">{{ item.title }}</div>
+                  <div class="col-sm-5 events-date d-flex flex-sm-row-reverse p-0">
+                    <span>{{ item.date }}</span>
+                  </div>
+                </div>
+              </mat-card-title>
+              <mat-card-subtitle>
+                <div class="row w-100 m-0">
+                  <div class="col-sm-7 p-0">
+                    <span *ngIf="item.subTitle">{{ item.subTitle }}</span>
+                  </div>
+                  <div class="col-sm-5 p-0 events-date d-flex flex-sm-row-reverse">
+                    <span>{{ item.time }}</span>
+                  </div>
+                </div>
+              </mat-card-subtitle>
+            </mat-card-header>
+            <div class="card-image">
+              <img
+                width="600"
+                mat-card-image
+                [src]="item.img"
+                [alt]="item.title"
+              />
+            </div>
+            <mat-card-content class="mat-card-header-text">
+              <p>
+                {{ item.description }}
+              </p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

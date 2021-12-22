@@ -1,0 +1,171 @@
+<div class="header pb-7 pt-4 pt-lg-7 pt-md-7 d-flex align-items-center">
+  <!-- Mask -->
+  <span class="mask bg-gradient-orange opacity-8"></span>
+
+  <!-- Header container -->
+  <div class="container-fluid d-flex align-items-center">
+    <div class="row w-100">
+      <div class="w-100 col-lg-7 col-md-10">
+        <h1 class="display-2 text-white">
+          {{ !formId ? "Cadastrar" : "Alterar" }} documento
+        </h1>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col-12">
+      <div class="card bg-secondary shadow">
+        <div class="card-header bg-white border-0">
+          <div class="row align-items-center">
+            <div class="col-8">
+              <h3 class="mb-0">Documento</h3>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div *ngIf="loadingResult" class="loadingForm">
+            <mat-spinner></mat-spinner>
+          </div>
+          <form role="form" [formGroup]="documentForm" *ngIf="!loadingResult">
+            <h6 class="heading-small text-muted mb-4">
+              Informações do documento
+            </h6>
+            <!-- Informações do usuário -->
+            <div class="pl-lg-4">
+              <div class="row">
+                <div class="col-12" *ngIf="!loadingFiles">
+                  <div class="documents">
+                    <div
+                      *ngFor="
+                        let document of documentsPreviews;
+                        index as i;
+                        first as isFirst;
+                        last as isLast
+                      "
+                    >
+                      <img [src]="document" alt="visualização documento" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 loadingFiles" *ngIf="loadingFiles">
+                  <span>{{loadedFilesPercentage}}%</span>
+                  <mat-spinner></mat-spinner>
+                </div>
+              </div>
+              <div class="row" *ngIf="profile.role === 'admin'">
+                <div class="col-12">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Usúario</mat-label>
+                    <select matNativeControl formControlName="user_id">
+                      <option *ngFor="let user of users" [value]="user.id">
+                        {{ user.name }}
+                      </option>
+                    </select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row" *ngIf="profile.role === 'admin'">
+                <div class="col-12">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Status</mat-label>
+                    <select
+                      matNativeControl
+                      formControlName="document_status"
+                      required
+                    >
+                      <option
+                        *ngFor="let status of documentStatus"
+                        [value]="status.id"
+                      >
+                        {{ status.name }}
+                      </option>
+                    </select>
+                    <mat-error *ngIf="hasError('document_status', 'required')">
+                      Status obrigatório
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div [ngClass]="{ 'col-12': !formId, 'col-lg-6': formId }">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Nome</mat-label>
+                    <input
+                      matInput
+                      placeholder="Ex: RG"
+                      formControlName="document_name"
+                      required
+                    />
+                    <mat-error *ngIf="hasError('document_name', 'required')"
+                      >Nome obrigatório</mat-error
+                    >
+                  </mat-form-field>
+                </div>
+                <div
+                  class="col-lg-6 btn-file p-0 m-0"
+                  *ngIf="
+                    formId &&
+                    (selectedStatus === 'aguardando' ||
+                      selectedStatus === 'recusado')
+                  "
+                >
+                  <p *ngIf="loadingFiles">
+                    <mat-progress-bar mode="query"></mat-progress-bar>
+                  </p>
+                  <button
+                    class="btnUpload"
+                    type="button"
+                    mat-raised-button
+                    [color]="invalidTypeFile ? 'warn' : 'primary'"
+                    (click)="fileInput.click()"
+                    [disabled]="loadingFiles"
+                  >
+                    {{
+                      loadingFiles
+                        ? "Aguarde, Estamos processando a(s) imagen(s)"
+                        : "Selecione a(s) imagen(s) do Documento (somente imagens)"
+                    }}
+                  </button>
+                  <input
+                    hidden
+                    type="file"
+                    #fileInput
+                    multiple
+                    (change)="onSelectFile($event)"
+                  />
+                </div>
+              </div>
+            </div>
+            <div *ngIf="loading && uploadResponse.status === 'progress'" class="col-12 loadingFiles" >
+              <span>{{uploadResponse.message}}%</span>
+              <mat-spinner></mat-spinner>
+            </div>
+            <div class="actions">
+              <button
+                type="button"
+                mat-stroked-button
+                color="primary"
+                (click)="cancel()"
+              >
+                Voltar
+              </button>
+              <div class="save">
+                <button
+                  mat-raised-button
+                  color="primary"
+                  type="submit"
+                  (click)="onSubmit()"
+                  [disabled]="loading"
+                >
+                  Salvar
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

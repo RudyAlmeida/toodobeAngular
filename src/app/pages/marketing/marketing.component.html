@@ -1,0 +1,41 @@
+<div class="header pb-7 pt-4 pt-lg-7 pt-md-7 d-flex align-items-center">
+  <!-- Mask -->
+  <span class="mask bg-gradient-orange opacity-8"></span>
+
+  <!-- Header container -->
+  <div class="container-fluid d-flex align-items-center">
+    <div class="row w-100">
+      <div class="w-100 col-lg-7 col-md-10">
+        <h1 class="display-2 text-white">Marketing</h1>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col-12">
+      <div class="card bg-secondary shadow">
+        <div class="card-body">
+          <div class="row" *ngIf="loading">
+            <div class="col-12">
+              <div class="d-flex justify-content-center">
+                <mat-spinner></mat-spinner>
+              </div>
+            </div>
+          </div>
+          <mat-nav-list>
+            <a
+              mat-list-item
+              [href]="item.path"
+              target="_blank"
+              *ngFor="let item of marketings"
+            >
+              {{ item.filename }}
+              <mat-divider></mat-divider>
+            </a>
+          </mat-nav-list>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

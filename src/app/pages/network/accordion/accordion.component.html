@@ -1,0 +1,28 @@
+<mat-accordion>
+  <mat-expansion-panel
+    *ngFor="let level of members; let i = index"
+    [disabled]="!level.members"
+  >
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ level.id ? 'ID - ' + level.id + '- ' : "" }}
+        {{
+          level.name
+            ? level.name
+            : i +
+              1 +
+              " º Geração " +
+              qualification[i].value +
+              " pessoas " +
+              (i + 1) +
+              "º ciclo - " +
+              qualification[i].text
+        }}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-accordion
+      [members]="level.members"
+      *ngIf="level.members"
+    ></app-accordion>
+  </mat-expansion-panel>
+</mat-accordion>

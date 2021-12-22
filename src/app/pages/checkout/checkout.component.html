@@ -1,0 +1,321 @@
+<div class="header pb-7 pt-4 pt-lg-7 pt-md-7 d-flex align-items-center">
+  <!-- Mask -->
+  <span class="mask bg-gradient-orange opacity-8"></span>
+
+  <!-- Header container -->
+  <div class="container-fluid d-flex align-items-center">
+    <div class="row w-100">
+      <div class="w-100 col-lg-7 col-md-10">
+        <h1 class="display-2 text-white">Checkout</h1>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col-12">
+      <div class="card bg-secondary shadow">
+        <div class="card-header bg-white border-0">
+          <div class="row align-items-center">
+            <div class="col-8">
+              <h3 class="mb-0">Informações de pagamento</h3>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <form role="form" [formGroup]="chackoutForm">
+            <div class="row">
+              <div class="col-lg-8">
+                <h6 class="heading heading-border text-muted mb-4">
+                  Escolha a forma de pagamento desejada
+                </h6>
+                <!-- Informações do checkout -->
+                <div class="pl-lg-4 mb-4">
+                  <div class="row mb-4">
+                    <div
+                      class="col-md-6 d-flex flex-column text-muted text-center checkout-option mb-4"
+                      [ngClass]="{ selected: paymentMethod === 'credit_card' }"
+                      (click)="setPaymentMethod('credit_card')"
+                    >
+                      <i class="fas fa-credit-card fa-5x"></i>
+                      <span>Cartão de crédito</span>
+                    </div>
+                    <div
+                      class="col-md-6 d-flex flex-column text-muted text-center checkout-option"
+                      [ngClass]="{ selected: paymentMethod === 'barcode' }"
+                      (click)="setPaymentMethod('barcode')"
+                    >
+                      <i class="fas fa-barcode fa-5x"></i>
+                      <span
+                        ><strong>Boleto bancário</strong> (5% de desconto)</span
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="pl-lg-4" *ngIf="paymentMethod === 'credit_card'">
+                  <div class="row">
+                    <div class="col-12">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Número do cartão</mat-label>
+                        <input
+                          matInput
+                          formControlName="card_number"
+                          appCreditCardValidator
+                          (selectedFlag)="selectedFlag = $event"
+                          mask="0000 0000 0000 0000"
+                          required
+                        />
+                        <i matSuffix class="icon-card">
+                          <img
+                            [alt]="selectedFlag"
+                            [title]="selectedFlag"
+                            src="./assets/img/credit_card/{{
+                              selectedFlag
+                            }}.svg"
+                          />
+                        </i>
+                        <mat-error *ngIf="hasError('card_number', 'required')"
+                          >Campo obrigatório</mat-error
+                        >
+                        <mat-error
+                          *ngIf="hasError('card_number', 'invalidNumber')"
+                          >Número inválido</mat-error
+                        >
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Nome impresso no cartão</mat-label>
+                        <input matInput formControlName="name" required />
+                        <mat-error *ngIf="hasError('name', 'required')"
+                          >Campo obrigatório</mat-error
+                        >
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Vencimento (MM/AAAA)</mat-label>
+                        <input matInput formControlName="name" required />
+                        <mat-error *ngIf="hasError('name', 'required')"
+                          >Campo obrigatório</mat-error
+                        >
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Chave de segurança</mat-label>
+                        <input matInput formControlName="name" required />
+                        <mat-error *ngIf="hasError('name', 'required')"
+                          >Campo obrigatório</mat-error
+                        >
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Qtd. Parcelas</mat-label>
+                        <input matInput formControlName="name" required />
+                        <mat-error *ngIf="hasError('name', 'required')"
+                          >Campo obrigatório</mat-error
+                        >
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <mat-checkbox
+                        >Salvar dados para compras futuras</mat-checkbox
+                      >
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <span>Aceitamos as seguintes bandeiras:*</span>
+                    </div>
+                  </div>
+                  <div class="cards">
+                    <i class="icon-card">
+                      <img
+                        src="./assets/img/credit_card/mastercard.svg"
+                        alt="mastercard"
+                        title="mastercard"
+                      />
+                    </i>
+                    <i class="icon-card">
+                      <img
+                        src="./assets/img/credit_card/visa.svg"
+                        alt="visa"
+                        title="visa"
+                      />
+                    </i>
+                    <i class="icon-card">
+                      <img
+                        src="./assets/img/credit_card/elo.svg"
+                        alt="elo"
+                        title="elo"
+                      />
+                    </i>
+                    <i class="icon-card">
+                      <img
+                        src="./assets/img/credit_card/hipercard.svg"
+                        alt="hipercard"
+                        title="hipercard"
+                      />
+                    </i>
+                    <i class="icon-card">
+                      <img
+                        src="./assets/img/credit_card/amex.svg"
+                        alt="amex"
+                        title="amex"
+                      />
+                    </i>
+                    <i class="icon-card">
+                      <img
+                        src="./assets/img/credit_card/diners.svg"
+                        alt="diners"
+                        title="diners"
+                      />
+                    </i>
+                    <i class="icon-card">
+                      <img
+                        src="./assets/img/credit_card/jcb.svg"
+                        alt="jcb"
+                        title="jcb"
+                      />
+                    </i>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <small>*Apenas cartões emitidos no Brasil</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="pl-lg-4" *ngIf="paymentMethod === 'barcode'">
+                  <div class="row mb-3">
+                    <div class="col-12">
+                      <strong
+                        >Valor do plano com boleto: R$ 4.275,00 (com 5% de
+                        desconto)</strong
+                      >
+                    </div>
+                  </div>
+                  <div class="barcode">
+                    <p>
+                      <i class="fas fa-calendar-alt fa-2x"></i>
+                      <span>
+                        Seu acesso será liberado após a identificação do
+                        pagamento (de 1 a 3 dias úteis)
+                      </span>
+                    </p>
+                    <p>
+                      <i class="fas fa-exclamation-triangle fa-2x"></i>
+                      <span>
+                        Caso não seja pago até o vencimento, o pedido será
+                        cancelado
+                      </span>
+                    </p>
+                    <p>
+                      <i class="fas fa-money-bill fa-2x"></i>
+                      <span> Você pode pagar o boleto em até 5 dias úteis</span>
+                    </p>
+                    <p>
+                      <i class="fas fa-print fa-2x"></i>
+                      <span>
+                        Você pode imprimir o boleto e pagar em seu banco de
+                        preferência
+                      </span>
+                    </p>
+                    <p>
+                      <i class="fas fa-barcode fa-2x"></i>
+                      <span>
+                        O boleto também pode ser pago pela internet. Para isso,
+                        utilize o código de barras ou o número da fatura.
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <h6 class="heading text-muted mb-4">
+                  Resumo do pedido
+                </h6>
+                <div class="pl-lg-4 summary">
+                  <div class="row">
+                    <div class="col-12 summary-body">
+                      <p><strong>1 Produto (Fusion Analysis)</strong></p>
+                      <p><span>Em até 12x de R$356,25</span></p>
+                      <hr />
+                      <div class="row">
+                        <div class="col-7">
+                          Desconto para boleto bancário (5% de desconto)
+                        </div>
+                        <div class="col-5 d-flex flex-row-reverse">
+                          <strong>-R$225,00</strong>
+                        </div>
+                      </div>
+                      <hr />
+                      <div class="row">
+                        <div class="col-6">Total</div>
+                        <div class="col-6 d-flex flex-row-reverse">
+                          <strong>R$4.275,00</strong>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-3"></div>
+                        <div class="col-9 d-flex flex-row-reverse p-0">
+                          ou à vista com 5% de desconto no boleto bancário
+                        </div>
+                      </div>
+                      <hr />
+                      <div class="row">
+                        <div class="col-7"><strong>Dados pessoais</strong></div>
+                        <div class="col-5 d-flex flex-row-reverse">
+                          <a href="" target="_blank">Alterar</a>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12">
+                          <mat-checkbox
+                            ><strong>Eu li e aceito os </strong>
+                            <a href="">termos & condições</a>
+                          </mat-checkbox>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12">
+                          <button
+                            mat-raised-button
+                            color="primary"
+                            type="submit"
+                            [disabled]="loading"
+                          >
+                            Finalizar compra
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p *ngIf="loading">
+              <mat-progress-bar mode="query"></mat-progress-bar>
+            </p>
+            <div class="actions">
+              <button
+                type="button"
+                mat-stroked-button
+                color="primary"
+              >
+                Cancelar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

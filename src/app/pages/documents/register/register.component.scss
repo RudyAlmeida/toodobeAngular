@@ -1,0 +1,61 @@
+.header {
+  height: 250px;
+}
+
+.btn-file {
+  margin-top: 10px;
+}
+
+.previewDoc {
+  width: auto;
+  height: 200px;
+  margin-bottom: 10px;
+  img {
+    max-height: 100%;
+  }
+}
+
+.btnUpload {
+  max-width: 100%;
+  text-align: left;
+  white-space: break-spaces;
+  line-height: 1.6;
+  padding: 16px;
+}
+
+.loadingFiles {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  span {
+    position: absolute;
+  }
+}
+
+.documents {
+  display: flex;
+  /* flex-wrap: wrap; */
+  overflow-y: auto;
+  margin-bottom: 15px;
+
+  div {
+    display: flex;
+    align-items: flex-end;
+    width: 16em;
+    min-width: 16em;
+    position: relative;
+    img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      padding: 10px;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .documents div {
+    width: 90%;
+    min-width: 90%;
+  }
+}

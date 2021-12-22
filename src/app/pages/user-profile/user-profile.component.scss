@@ -1,0 +1,63 @@
+.header {
+  height: 250px;
+}
+
+.galeria {
+  position: relative;
+  padding: 0;
+  margin-bottom: 10px;
+  height: 100%;
+  img {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    transform: translate(-50%, 31%);
+  }
+  .galeria-descricao {
+    position: absolute;
+    background: rgba(244, 157, 44, 0.5);
+    color: #fff;
+    max-width: 180px;
+    visibility: hidden;
+    -webkit-transform: translate(-50%, 31%);
+    transform: translate(-50%, 31%);
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    border-radius: 50% !important;
+    left: 50%;
+    width: 180px;
+    height: 180px;
+  }
+}
+
+.galeria:hover {
+  .galeria-descricao {
+    visibility: visible;
+    -webkit-transition: background-color 0.3s, border-color 0.3s,
+      text-color 0.3s;
+    -o-transition: background-color 0.3s, border-color 0.3s, text-color 0.3s;
+    transition: background-color 0.3s, border-color 0.3s, text-color 0.3s;
+  }
+}
+
+.galeria-error {
+  border: 2px solid #f44336;
+  border-radius: 3px;
+}
+
+@media (max-width: 1024px) {
+  .card-profile-image {
+    height: 180px;
+    .col-12 {
+      height: 180px;
+    }
+    img {
+      -webkit-transform: translate(-50%, 0%);
+      transform: translate(-50%, 0%);
+    }
+    .galeria-descricao {
+      -webkit-transform: translate(-50%, 0%);
+      transform: translate(-50%, 0%);
+    }
+  }
+}

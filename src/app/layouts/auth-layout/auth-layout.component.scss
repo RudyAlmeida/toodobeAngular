@@ -1,0 +1,14 @@
+.bg-toodo-be {
+  background: linear-gradient(180deg, #fff 60%, #f49d2c 40%);
+}
+
+.bg-toodo-be-register {
+  background: linear-gradient(180deg, #fff 40%, #f49d2c 40%);
+  padding: 20px;
+}
+
+@media screen and (max-width: 600px){
+  .bg-toodo-be-register {
+    padding: 0 !important;
+  }
+}

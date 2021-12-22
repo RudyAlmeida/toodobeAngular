@@ -1,0 +1,17 @@
+.confirm-register {
+  min-width: 90%;
+}
+
+.actions {
+  display: flex;
+
+  button {
+    min-width: 100px;
+  }
+}
+
+@media (min-width: 575px) {
+  .confirm-register {
+    min-width: 500px;
+  }
+}

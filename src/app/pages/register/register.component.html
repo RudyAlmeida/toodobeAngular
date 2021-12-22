@@ -1,0 +1,358 @@
+<div class="container m-auto forgot-password" hidde>
+  <div class="row justify-content-center m-0">
+    <div class="col-12 p-0">
+      <div class="card bg-secondary shadow border-0">
+        <div class="card-body px-lg-5 py-lg-5">
+          <div class="text-center text-muted mb-4 pt-2 pb-5 img-logo">
+            <img src="./assets/img/brand/logo.png" />
+          </div>
+
+          <mat-horizontal-stepper
+            [linear]="!registerForm.value.acceptTerms"
+            #stepper
+          >
+            <mat-step
+              [stepControl]="registerForm"
+              errorMessage="Preencha todos os campos."
+            >
+              <form [formGroup]="registerForm">
+                <ng-template matStepLabel>Dados</ng-template>
+                <p *ngIf="!affiliateCode">
+                  <mat-form-field appearance="fill">
+                    <mat-icon matSuffix>device_hub</mat-icon>
+                    <mat-label>Código de indicação</mat-label>
+                    <input matInput formControlName="affiliate_code" required />
+                    <mat-error *ngIf="hasError('affiliate_code', 'required')">
+                      Código de indicação obrigatório
+                    </mat-error>
+                  </mat-form-field>
+                </p>
+                <p>
+                  <mat-form-field appearance="fill">
+                    <mat-icon matSuffix>account_circle</mat-icon>
+                    <mat-label>Nome completo</mat-label>
+                    <input matInput formControlName="name" required />
+                    <mat-error *ngIf="hasError('name', 'required')">
+                      Nome obrigatório
+                    </mat-error>
+                  </mat-form-field>
+                </p>
+                <p>
+                  <mat-form-field appearance="fill">
+                    <mat-icon matSuffix>email</mat-icon>
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email" required />
+                    <mat-error *ngIf="hasError('email', 'required')">
+                      Email obrigatório
+                    </mat-error>
+                    <mat-error *ngIf="hasError('email', 'email')">
+                      Email inválido
+                    </mat-error>
+                  </mat-form-field>
+                </p>
+                <p>
+                  <mat-form-field appearance="fill">
+                    <mat-label>Data de nascimento</mat-label>
+                    <input
+                      matInput
+                      formControlName="birthday"
+                      [matDatepicker]="birthday"
+                      required
+                    />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="birthday"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #birthday></mat-datepicker>
+                    <mat-error *ngIf="hasError('birthday', 'required')">
+                      Data obrigatório
+                    </mat-error>
+                  </mat-form-field>
+                </p>
+                <p>
+                  <mat-form-field appearance="fill">
+                    <mat-icon matSuffix>perm_identity</mat-icon>
+                    <mat-label>CPF</mat-label>
+                    <input
+                      matInput
+                      formControlName="registry_code"
+                      [dropSpecialCharacters]="false"
+                      mask="000.000.000-00"
+                      required
+                    />
+                    <mat-error *ngIf="hasError('registry_code', 'required')">
+                      CPF obrigatório
+                    </mat-error>
+                    <mat-error *ngIf="hasError('registry_code', 'cpf')">
+                      CPF inválido
+                    </mat-error>
+                  </mat-form-field>
+                </p>
+                <p>
+                  <mat-form-field appearance="fill">
+                    <mat-icon matSuffix>call</mat-icon>
+                    <mat-label>Celular</mat-label>
+                    <input
+                      matInput
+                      formControlName="mobile"
+                      [dropSpecialCharacters]="false"
+                      mask="(00) 00000-0000"
+                      required
+                    />
+                    <mat-error *ngIf="hasError('mobile', 'required')">
+                      Celular obrigatório
+                    </mat-error>
+                  </mat-form-field>
+                </p>
+                <p>
+                  <mat-form-field appearance="fill">
+                    <mat-label>Senha</mat-label>
+                    <input
+                      autocomplete="new-password"
+                      matInput
+                      formControlName="password"
+                      [type]="hide ? 'password' : 'text'"
+                      required
+                    />
+                    <button
+                      type="button"
+                      [disabled]="submitted"
+                      mat-icon-button
+                      matSuffix
+                      (click)="hide = !hide"
+                      [attr.aria-label]="'Senha'"
+                      [attr.aria-pressed]="hide"
+                    >
+                      <mat-icon>
+                        {{ hide ? "visibility_off" : "visibility" }}
+                      </mat-icon>
+                    </button>
+                    <mat-error *ngIf="hasError('password', 'required')">
+                      Senha obrigatório
+                    </mat-error>
+                  </mat-form-field>
+                </p>
+                <p>
+                  <mat-form-field appearance="fill">
+                    <mat-label>Confirmar senha</mat-label>
+                    <input
+                      autocomplete="new-password"
+                      matInput
+                      formControlName="confirm"
+                      type="password"
+                      required
+                    />
+                    <mat-error *ngIf="hasError('confirm', 'required')">
+                      Confirmar senha obrigatório
+                    </mat-error>
+                    <mat-error *ngIf="hasError('confirm', 'newMatchesConfirm')">
+                      Confirmar senha deve ser igual a senha.
+                    </mat-error>
+                  </mat-form-field>
+                  <app-password-strength
+                    [passwordToCheck]="registerForm.value.password"
+                  ></app-password-strength>
+                </p>
+                <div class="terms-link">
+                  <mat-checkbox formControlName="acceptTerms">
+                    Aceito os termos de
+                  </mat-checkbox>
+                  <a
+                    href="https://www.toodobe.com/politica-de-privacidade"
+                    target="_blank"
+                  >
+                    uso e privacidade
+                  </a>
+                </div>
+                <div class="actions">
+                  <button
+                    type="button"
+                    mat-stroked-button
+                    color="primary"
+                    (click)="cancel()"
+                  >
+                    Cancelar
+                  </button>
+                  <div class="save">
+                    <button
+                      mat-raised-button
+                      matStepperNext
+                      color="primary"
+                      [disabled]="!registerForm.value.acceptTerms"
+                    >
+                      Continuar
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </mat-step>
+            <mat-step
+              [stepControl]="addressForm"
+              errorMessage="Preencha todos os campos."
+            >
+              <form [formGroup]="addressForm">
+                <ng-template matStepLabel>Endereço</ng-template>
+                <p>
+                  <mat-form-field appearance="fill">
+                    <mat-icon matSuffix>my_location</mat-icon>
+                    <mat-label>País</mat-label>
+                    <input
+                      matInput
+                      formControlName="address_country"
+                      required
+                    />
+                    <mat-error
+                      *ngIf="hasAddressError('address_country', 'required')"
+                    >
+                      País obrigatório
+                    </mat-error>
+                  </mat-form-field>
+                </p>
+                <p>
+                  <mat-form-field appearance="fill">
+                    <mat-icon matSuffix>place</mat-icon>
+                    <mat-label>Cidade</mat-label>
+                    <input matInput formControlName="address_city" required />
+                    <mat-error
+                      *ngIf="hasAddressError('address_city', 'required')"
+                    >
+                      Cidade obrigatório
+                    </mat-error>
+                  </mat-form-field>
+                </p>
+                <p>
+                  <mat-form-field appearance="fill">
+                    <mat-icon matSuffix>person_pin_circle</mat-icon>
+                    <mat-label>UF</mat-label>
+                    <input
+                      matInput
+                      formControlName="address_state"
+                      mask="SS"
+                      required
+                    />
+                    <mat-error
+                      *ngIf="hasAddressError('address_state', 'required')"
+                    >
+                      UF obrigatório
+                    </mat-error>
+                  </mat-form-field>
+                </p>
+                <div class="actions">
+                  <button mat-stroked-button matStepperPrevious color="primary">
+                    Voltar
+                  </button>
+                  <div class="save">
+                    <button mat-raised-button matStepperNext color="primary">
+                      Continuar
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </mat-step>
+            <mat-step [stepControl]="finalForm">
+              <form [formGroup]="finalForm">
+                <ng-template matStepLabel>Salvar</ng-template>
+                <p>
+                  <mat-radio-group
+                    aria-label="Tipo de afiliado"
+                    formControlName="affiliate_type"
+                  >
+                    <mat-radio-button
+                      *ngFor="let item of affiliateTypes"
+                      [value]="item.value"
+                      >{{ item.text }}</mat-radio-button
+                    >
+                  </mat-radio-group>
+                </p>
+
+                <div
+                  class="table-container mat-elevation-z8"
+                  *ngIf="finalForm.value.affiliate_type === 'afiliado'"
+                >
+                  <div class="loading-shade" *ngIf="loadingProperties">
+                    <mat-spinner></mat-spinner>
+                  </div>
+
+                  <div class="table">
+                    <table mat-table [dataSource]="dataSource">
+                      <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef></th>
+                        <td mat-cell *matCellDef="let row">
+                          <mat-radio-group formControlName="property_values_id">
+                            <mat-radio-button
+                              [checked]="
+                                finalForm.value.property_values_id === row.id
+                              "
+                              [value]="row.id"
+                            ></mat-radio-button>
+                          </mat-radio-group>
+                        </td>
+                      </ng-container>
+
+                      <!-- $ IMÓVEL Column -->
+                      <ng-container matColumnDef="property_value">
+                        <th mat-header-cell *matHeaderCellDef>$ Imóvel</th>
+                        <td mat-cell *matCellDef="let element">
+                          {{ element.property_value }}
+                        </td>
+                      </ng-container>
+
+                      <!-- 1a PARC. Column -->
+                      <ng-container matColumnDef="first_installment">
+                        <th mat-header-cell *matHeaderCellDef>1a parc.</th>
+                        <td mat-cell *matCellDef="let element">
+                          {{ element.first_installment }}
+                        </td>
+                      </ng-container>
+
+                      <!-- ÚLTIMA Column -->
+                      <ng-container matColumnDef="last_installment">
+                        <th mat-header-cell *matHeaderCellDef>Última</th>
+                        <td mat-cell *matCellDef="let element">
+                          {{ element.last_installment }}
+                        </td>
+                      </ng-container>
+
+                      <tr
+                        mat-header-row
+                        *matHeaderRowDef="displayedColumns"
+                      ></tr>
+                      <tr
+                        mat-row
+                        *matRowDef="let row; columns: displayedColumns"
+                      ></tr>
+                    </table>
+                  </div>
+                  <mat-card *ngIf="!loadingProperties && !dataSource.length">
+                    Ops!!! Não foi possível carregar a tabela de afiliado, por
+                    favor tente novamente mais tarde.
+                  </mat-card>
+                </div>
+
+                <p *ngIf="loading">
+                  <mat-progress-bar mode="query"></mat-progress-bar>
+                </p>
+                <div class="actions">
+                  <button mat-stroked-button matStepperPrevious color="primary">
+                    Voltar
+                  </button>
+                  <div class="save">
+                    <button
+                      mat-raised-button
+                      color="primary"
+                      type="submit"
+                      (click)="onSubmit()"
+                      [disabled]="loading || submitted || !dataSource.length"
+                    >
+                      Criar conta
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </mat-step>
+          </mat-horizontal-stepper>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

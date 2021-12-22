@@ -1,0 +1,13 @@
+.header {
+  height: 250px;
+}
+
+.action {
+  max-height: 80px;
+  display: flex;
+  align-items: center;
+
+  mat-spinner {
+    margin-left: 50px;
+  }
+}

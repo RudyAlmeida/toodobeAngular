@@ -1,0 +1,26 @@
+.divider-dash {
+  height: 2px;
+  background-color: #f49d2c;
+}
+
+.icon-header {
+  height: 56px;
+  span {
+    margin-left: 10px;
+    font-weight: 600;
+  }
+}
+
+.card-dash {
+  border: 1px solid #f49d2c;
+  margin-bottom: 26px;
+}
+
+.card-body {
+  width: 100%;
+  .divider-card {
+    height: 2px;
+    background-color: #f49d2c;
+    margin: 10px -5px !important;
+  }
+}

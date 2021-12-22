@@ -1,0 +1,61 @@
+<div class="container m-auto app-login">
+  <div class="row justify-content-center m-0">
+    <div class="col-12 p-0">
+      <div class="card bg-secondary shadow border-0">
+        <div class="card-body px-lg-5 py-lg-5">
+          <div class="text-center text-muted mb-4 pt-2 pb-5 img-logo">
+            <img src="./assets/img/brand/logo.png" />
+          </div>
+          <form role="form" [formGroup]="loginForm">
+            <p>
+              <mat-form-field appearance="fill">
+                <mat-icon matSuffix>email</mat-icon>
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" required />
+                <mat-error *ngIf="hasError('email', 'required')">Email obrigatório</mat-error>
+                <mat-error *ngIf="hasError('email', 'email')">Email inválido</mat-error>
+              </mat-form-field>
+            </p>
+            <p>
+              <mat-form-field appearance="fill">
+                <mat-label>Senha</mat-label>
+                <input matInput formControlName="password" [type]="hide ? 'password' : 'text'" required />
+                <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Senha'"
+                  [attr.aria-pressed]="hide">
+                  <mat-icon>
+                    {{ hide ? "visibility_off" : "visibility" }}
+                  </mat-icon>
+                </button>
+                <mat-error *ngIf="hasError('password', 'required')">Senha obrigatório</mat-error>
+              </mat-form-field>
+            </p>
+            <div class="row">
+              <div class="col-12 col-sm-6 d-flex justify-content-center justify-content-sm-start">
+                <mat-checkbox formControlName="persist">Mantenha-me conectado</mat-checkbox>
+              </div>
+              <div class="col-12 col-sm-6 d-flex justify-content-center justify-content-sm-end">
+                <a [routerLink]="['/esqueci-senha']" href="javascript:void(0)">
+                  Esqueci a senha
+                </a>
+              </div>
+            </div>
+            <p *ngIf="loading">
+              <mat-progress-bar mode="query"></mat-progress-bar>
+            </p>
+            <div class="text-center pt-3 pb-3">
+              <button class="button" type="submit" (click)="onSubmit()" [disabled]="loading" mat-raised-button
+                color="primary">
+                Entrar
+              </button>
+            </div>
+            <div class="text-center">
+              <a [routerLink]="['/cadastro']" href="javascript:void(0)">
+                Criar conta
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

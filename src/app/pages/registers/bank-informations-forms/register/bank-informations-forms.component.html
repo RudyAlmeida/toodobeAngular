@@ -1,0 +1,248 @@
+<div class="header pb-7 pt-4 pt-lg-7 pt-md-7 d-flex align-items-center">
+  <!-- Mask -->
+  <span class="mask bg-gradient-orange opacity-8"></span>
+
+  <!-- Header container -->
+  <div class="container-fluid d-flex align-items-center">
+    <div class="row w-100">
+      <div class="w-100 col-lg-7 col-md-10">
+        <h1 class="display-2 text-white">
+          {{ !formId ? "Cadastrar" : "Alterar" }} dados bancários
+        </h1>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col-12">
+      <div class="card bg-secondary shadow">
+        <div class="card-header bg-white border-0">
+          <div class="row align-items-center">
+            <div class="col-8">
+              <h3 class="mb-0">Dados bancários</h3>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div *ngIf="loadingResult" class="loadingForm">
+            <mat-spinner></mat-spinner>
+          </div>
+          <form
+            role="form"
+            [formGroup]="profileForm"
+            *ngIf="!loadingResult"
+            (ngSubmit)="save()"
+          >
+            <!-- Informações do banco -->
+            <div class="pl-lg-4">
+              <div class="row" *ngIf="profile.role === 'admin'">
+                <div class="col-12">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Usúario</mat-label>
+                    <select matNativeControl formControlName="user_id" required>
+                      <option *ngFor="let user of users" [value]="user.id">
+                        {{ user.name }}
+                      </option>
+                    </select>
+                    <mat-error *ngIf="hasError('user_id', 'required')">
+                      Usúario obrigatório
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Conta para comissão ?</mat-label>
+                    <select
+                      matNativeControl
+                      aria-labelledby="Conta para comissão ?"
+                      formControlName="for_commissions"
+                    >
+                      <option [value]="1">
+                        Sim
+                      </option>
+                      <option [value]="0">
+                        Não
+                      </option>
+                    </select>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Tipo de conta ?</mat-label>
+                    <select
+                      matNativeControl
+                      aria-labelledby="Conta para comissão ?"
+                      formControlName="bank_account_type"
+                    >
+                      <option value="CONTA_CORRENTE">
+                        Corrente
+                      </option>
+                      <option value="CONTA_POUPANCA">
+                        Poupança
+                      </option>
+                    </select>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Código banco</mat-label>
+                    <input
+                      matInput
+                      formControlName="bank_code"
+                      mask="0*"
+                      maxlength="4"
+                      required
+                    />
+                    <mat-error *ngIf="hasError('bank_code', 'required')"
+                      >Código banco obrigatório</mat-error
+                    >
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-6">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Apelido da conta</mat-label>
+                    <input matInput formControlName="account_name" required />
+                    <mat-error *ngIf="hasError('account_name', 'required')"
+                      >Apelido da conta obrigatório</mat-error
+                    >
+                  </mat-form-field>
+                </div>
+                <div class="col-sm-6">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Data de nascimento</mat-label>
+                    <input
+                      matInput
+                      formControlName="owner_birth_date"
+                      [matDatepicker]="owner_birth_date"
+                    />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="owner_birth_date"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #owner_birth_date></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-6">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Nome cliente</mat-label>
+                    <input matInput formControlName="owner_name" required />
+                    <mat-error *ngIf="hasError('owner_name', 'required')"
+                      >Nome cliente obrigatório</mat-error
+                    >
+                  </mat-form-field>
+                </div>
+                <div class="col-sm-6">
+                  <mat-form-field appearance="outline">
+                    <mat-label>CPF/CNPJ cliente</mat-label>
+                    <input
+                      matInput
+                      formControlName="registry_code"
+                      [dropSpecialCharacters]="false"
+                      mask="000.000.000-00||00.000.000/0000-00"
+                      required
+                    />
+                    <mat-error *ngIf="hasError('registry_code', 'required')">
+                      CPF/CNPJ obrigatório
+                    </mat-error>
+                    <mat-error *ngIf="hasError('registry_code', 'cpf')">
+                      CPF inválido
+                    </mat-error>
+                    <mat-error *ngIf="hasError('registry_code', 'cnpj')">
+                      CNPJ inválido
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-5">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Agência</mat-label>
+                    <input
+                      matInput
+                      formControlName="agency"
+                      mask="0*"
+                      maxlength="8"
+                      required
+                    />
+                    <mat-error *ngIf="hasError('agency', 'required')"
+                      >Agência obrigatório</mat-error
+                    >
+                  </mat-form-field>
+                </div>
+                <div class="col-lg-7">
+                  <div class="row">
+                    <div class="col-lg-9">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Conta</mat-label>
+                        <input
+                          matInput
+                          formControlName="account"
+                          mask="0*"
+                          maxlength="11"
+                          required
+                        />
+                        <mat-error *ngIf="hasError('account', 'required')"
+                          >Conta obrigatório</mat-error
+                        >
+                      </mat-form-field>
+                    </div>
+                    <div class="col-lg-3">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Dígito</mat-label>
+                        <input
+                          matInput
+                          formControlName="account_digit"
+                          required
+                          mask="0*"
+                          maxlength="2"
+                        />
+                        <mat-error *ngIf="hasError('account_digit', 'required')"
+                          >Dígito obrigatório</mat-error
+                        >
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Informações do banco -->
+
+            <p *ngIf="loadingSave">
+              <mat-progress-bar mode="query"></mat-progress-bar>
+            </p>
+            <div class="actions">
+              <button
+                type="button"
+                mat-stroked-button
+                color="primary"
+                (click)="cancel()"
+              >
+                Voltar
+              </button>
+              <div class="save">
+                <button
+                  mat-raised-button
+                  color="primary"
+                  type="submit"
+                  [disabled]="loadingSave"
+                >
+                  Salvar
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

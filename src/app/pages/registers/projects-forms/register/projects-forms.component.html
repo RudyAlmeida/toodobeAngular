@@ -1,0 +1,366 @@
+<div class="header pb-7 pt-4 pt-lg-7 pt-md-7 d-flex align-items-center">
+  <!-- Mask -->
+  <span class="mask bg-gradient-orange opacity-8"></span>
+
+  <!-- Header container -->
+  <div class="container-fluid d-flex align-items-center">
+    <div class="row w-100">
+      <div class="w-100 col-lg-7 col-md-10">
+        <h1 class="display-2 text-white">
+          {{ !formId ? "Cadastrar" : "Alterar" }} dados do imóvel
+        </h1>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col-12">
+      <div class="card bg-secondary shadow">
+        <div class="card-header bg-white border-0">
+          <div class="row align-items-center">
+            <div class="col-8">
+              <h3 class="mb-0">Dados do Imóvel</h3>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div *ngIf="loadingResult" class="loadingForm">
+            <mat-spinner></mat-spinner>
+          </div>
+          <form
+            role="form"
+            [formGroup]="profileForm"
+            *ngIf="!loadingResult"
+            (ngSubmit)="save()"
+          >
+            <div class="pl-lg-4">
+              <div class="row" *ngIf="profile.role === 'admin'">
+                <div class="col-12">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Usúario</mat-label>
+                    <select matNativeControl formControlName="user_id" required>
+                      <option *ngFor="let user of users" [value]="user.id">
+                        {{ user.name }}
+                      </option>
+                    </select>
+                    <mat-error *ngIf="hasError('user_id', 'required')">
+                      Usúario obrigatório
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <mat-form-field appearance="outline" floatLabel="always">
+                    <mat-label>Descrição</mat-label>
+                    <input
+                      matInput
+                      formControlName="project_desciption"
+                      placeholder="Ex: Casa na praia"
+                      required
+                    />
+                    <mat-error
+                      *ngIf="hasError('project_desciption', 'required')"
+                      >Descrição obrigatório</mat-error
+                    >
+                  </mat-form-field>
+                </div>
+                <div class="col-sm-6">
+                  <div class="loading-shade" *ngIf="loadingProperties">
+                    <mat-spinner diameter="50"></mat-spinner>
+                  </div>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Valor imóvel</mat-label>
+                    <select matNativeControl formControlName="project_value" required>
+                      <option *ngFor="let project of dataSource" [value]="project.id">
+                        {{ project.property_value }}
+                      </option>
+                    </select>
+                    <mat-error *ngIf="hasError('project_value', 'required')">
+                      Valor imóvel obrigatório
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-12">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-chip-list"
+                  >
+                    <mat-label>Tipo de imóvel</mat-label>
+                    <mat-chip-list #chipList aria-label="Tipo de imóvel">
+                      <mat-chip
+                        *ngFor="let item of selectedPropertyTypes"
+                        [selectable]="selectable"
+                        [removable]="removable"
+                        (removed)="toggleSelection(item)"
+                      >
+                        {{ item.name }}
+                        <mat-icon matChipRemove *ngIf="removable"
+                          >cancel</mat-icon
+                        >
+                      </mat-chip>
+                      <input
+                        placeholder="Selecione..."
+                        #propertyType
+                        formControlName="property_type"
+                        [matAutocomplete]="auto"
+                        [matChipInputFor]="chipList"
+                      />
+                    </mat-chip-list>
+                    <mat-autocomplete #auto="matAutocomplete">
+                      <mat-optgroup
+                        *ngFor="let item of propertyTypeGroupOptions | async"
+                        [label]="item.group"
+                      >
+                        <mat-option
+                          *ngFor="let type of item.types"
+                          [value]="selectedPropertyTypes"
+                        >
+                          <div (click)="optionClicked($event, type)">
+                            <mat-checkbox
+                              [checked]="type.selected"
+                              (change)="toggleSelection(type)"
+                              (click)="$event.stopPropagation()"
+                            >
+                              {{ type.name }}
+                            </mat-checkbox>
+                          </div>
+                        </mat-option>
+                      </mat-optgroup>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-chip-list"
+                  >
+                    <mat-label>Lazer e esporte</mat-label>
+                    <mat-chip-list
+                      #chipLeisureSportList
+                      aria-label="Lazer e esporte"
+                    >
+                      <mat-chip
+                        *ngFor="let item of selectedLeisureSport"
+                        [selectable]="selectable"
+                        [removable]="removable"
+                        (removed)="toggleLeisureSportSelection(item)"
+                      >
+                        {{ item.name }}
+                        <mat-icon matChipRemove *ngIf="removable"
+                          >cancel</mat-icon
+                        >
+                      </mat-chip>
+                      <input
+                        placeholder="Selecione..."
+                        formControlName="leisure_sport"
+                        [matAutocomplete]="leisure_sport"
+                        [matChipInputFor]="chipLeisureSportList"
+                      />
+                    </mat-chip-list>
+                    <mat-autocomplete #leisure_sport="matAutocomplete">
+                      <mat-option
+                        *ngFor="let type of leisureSportOptions | async"
+                        [value]="selectedLeisureSport"
+                      >
+                        <div (click)="optionLeisureSportClicked($event, type)">
+                          <mat-checkbox
+                            [checked]="type.selected"
+                            (change)="toggleLeisureSportSelection(type)"
+                            (click)="$event.stopPropagation()"
+                          >
+                            {{ type.name }}
+                          </mat-checkbox>
+                        </div>
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-chip-list"
+                  >
+                    <mat-label>Comodidades e serviços</mat-label>
+                    <mat-chip-list
+                      #amenitiesServicesList
+                      aria-label="Comodidades e serviços"
+                    >
+                      <mat-chip
+                        *ngFor="let item of selectedAmenitiesServices"
+                        [selectable]="selectable"
+                        [removable]="removable"
+                        (removed)="toggleAmenitiesServicesSelection(item)"
+                      >
+                        {{ item.name }}
+                        <mat-icon matChipRemove *ngIf="removable"
+                          >cancel</mat-icon
+                        >
+                      </mat-chip>
+                      <input
+                        placeholder="Selecione..."
+                        #amenitiesServices
+                        formControlName="amenities_services"
+                        [matAutocomplete]="amenities_services"
+                        [matChipInputFor]="amenitiesServicesList"
+                      />
+                    </mat-chip-list>
+                    <mat-autocomplete #amenities_services="matAutocomplete">
+                      <mat-option
+                        *ngFor="let type of amenitiesServicesOptions | async"
+                        [value]="selectedAmenitiesServices"
+                      >
+                        <div
+                          (click)="optionAmenitiesServicesClicked($event, type)"
+                        >
+                          <mat-checkbox
+                            [checked]="type.selected"
+                            (change)="toggleAmenitiesServicesSelection(type)"
+                            (click)="$event.stopPropagation()"
+                          >
+                            {{ type.name }}
+                          </mat-checkbox>
+                        </div>
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-chip-list"
+                  >
+                    <mat-label>Segurança</mat-label>
+                    <mat-chip-list #safetyList aria-label="Segurança">
+                      <mat-chip
+                        *ngFor="let item of selectedSafety"
+                        [selectable]="selectable"
+                        [removable]="removable"
+                        (removed)="toggleSafetySelection(item)"
+                      >
+                        {{ item.name }}
+                        <mat-icon matChipRemove *ngIf="removable"
+                          >cancel</mat-icon
+                        >
+                      </mat-chip>
+                      <input
+                        placeholder="Selecione..."
+                        #amenitiesServices
+                        formControlName="safety"
+                        [matAutocomplete]="safety"
+                        [matChipInputFor]="safetyList"
+                      />
+                    </mat-chip-list>
+                    <mat-autocomplete #safety="matAutocomplete">
+                      <mat-option
+                        *ngFor="let type of safetyOptions | async"
+                        [value]="selectedSafety"
+                      >
+                        <div (click)="optionSafetyClicked($event, type)">
+                          <mat-checkbox
+                            [checked]="type.selected"
+                            (change)="toggleSafetySelection(type)"
+                            (click)="$event.stopPropagation()"
+                          >
+                            {{ type.name }}
+                          </mat-checkbox>
+                        </div>
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row radio-group">
+                <div class="col-12">
+                  <mat-label>Número de quartos</mat-label>
+                </div>
+                <div class="col-12">
+                  <mat-radio-group
+                    formControlName="bedrooms"
+                    aria-label="Número de quartos"
+                  >
+                    <mat-radio-button [value]="1">1+</mat-radio-button>
+                    <mat-radio-button [value]="2">2+</mat-radio-button>
+                    <mat-radio-button [value]="3">3+</mat-radio-button>
+                    <mat-radio-button [value]="4">4+</mat-radio-button>
+                    <mat-radio-button [value]="5">5+</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+              <div class="row radio-group">
+                <div class="col-12">
+                  <mat-label>Número de vagas na garagem</mat-label>
+                </div>
+                <div class="col-12">
+                  <mat-radio-group
+                    formControlName="parking_spaces"
+                    aria-label="Número de vagas na garagem"
+                  >
+                    <mat-radio-button [value]="1">1+</mat-radio-button>
+                    <mat-radio-button [value]="2">2+</mat-radio-button>
+                    <mat-radio-button [value]="3">3+</mat-radio-button>
+                    <mat-radio-button [value]="4">4+</mat-radio-button>
+                    <mat-radio-button [value]="5">5+</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <label>Cômodos</label>
+                  <section class="checkbox-section">
+                    <mat-checkbox
+                      [checked]="isChecked(type)"
+                      *ngFor="let type of rooms"
+                      (change)="toggleRoomsSelection(type)"
+                      >{{ type.name }}</mat-checkbox
+                    >
+                  </section>
+                </div>
+              </div>
+              <div class="row" *ngIf="subscription">
+                <div class="col-12">
+                  <span>Assinatura gerada pra esse projeto </span>
+                  <a [href]="subscription.url">Ver agora.</a>
+                </div>
+              </div>
+            </div>
+
+            <p *ngIf="loadingSave">
+              <mat-progress-bar mode="query"></mat-progress-bar>
+            </p>
+            <div class="actions">
+              <button
+                type="button"
+                mat-stroked-button
+                color="primary"
+                (click)="cancel()"
+              >
+                Voltar
+              </button>
+              <div class="save">
+                <button
+                  mat-raised-button
+                  color="primary"
+                  type="submit"
+                  [disabled]="loadingSave"
+                >
+                  Salvar
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

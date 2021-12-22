@@ -1,0 +1,73 @@
+<div class="header pb-7 pt-4 pt-lg-7 pt-md-7 d-flex align-items-center">
+  <!-- Mask -->
+  <span class="mask bg-gradient-orange opacity-8"></span>
+
+  <!-- Header container -->
+  <div class="container-fluid d-flex align-items-center">
+    <div class="row w-100">
+      <div class="w-100 col-lg-7 col-md-10">
+        <h1 class="display-2 text-white">Detalhes documento</h1>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col-12">
+      <div class="card bg-secondary shadow">
+        <div class="card-header bg-white border-0">
+          <div class="row align-items-center">
+            <div class="col-8">
+              <h3 class="mb-0">Documento</h3>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div *ngIf="loading" class="loadingForm">
+            <mat-spinner></mat-spinner>
+          </div>
+          <form role="form" *ngIf="!loading">
+            <h6 class="heading-small text-muted mb-4">
+              Informações do documento
+            </h6>
+            <!-- Informações do usuário -->
+            <div class="pl-lg-4">
+              <div class="row">
+                <div class="col-12 detail">
+                  <strong>Usuário: </strong>
+                  <span>{{dataForm.user_name}}</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12 detail">
+                  <strong>Documento: </strong>
+                  <span>{{dataForm.document_name}}</span>
+                </div>
+              </div>
+              <div class="row" *ngIf="dataForm.document_file">
+                <div class="col-12 detail">
+                  <a [href]="dataForm.document_file" target="_blank">
+                    Visualizar documento
+                  </a>
+                </div>
+              </div>
+            </div>
+            <p *ngIf="loading">
+              <mat-progress-bar mode="query"></mat-progress-bar>
+            </p>
+            <div class="actions">
+              <button
+                type="button"
+                mat-stroked-button
+                color="primary"
+                (click)="cancel()"
+              >
+                Voltar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
